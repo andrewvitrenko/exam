@@ -9,7 +9,22 @@ body {
     margin: 0;
 }
 
+header {
+    text-align: center;
+}
+
+.start-button {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 1% 2%;
+    border-radius: 10px;
+    border: 3px solid #4A235A;
+    color: #4A235A;
+    background-color: #A569BD;
+}
+
 .content-wrapper {
+    margin: 5% 0;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -73,5 +88,20 @@ body {
 
 .progress-value::after {
     content: '%';
+}
+
+footer {
+    text-align: center;
+    padding-bottom: 3%;
+}
+
+.reset-button {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 1% 2%;
+    border-radius: 10px;
+    border: 3px solid #4A235A;
+    color: #a52a2a;
+    background-color: #A569BD;
 }
 
