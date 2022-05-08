@@ -44,7 +44,7 @@ header {
     background: #A569BD;
     border: none;
     outline: none;
-    padding: 2.5% 5%;
+    padding: 12px 23px;
     border-radius: 30px;
     color: #4A235A;
     margin: 3%;
@@ -105,3 +105,22 @@ footer {
     background-color: #A569BD;
 }
 
+@media screen and (max-width: 640px) {
+    .parameter {
+        flex-basis: 40%;
+    }
+
+    .reset-button, .start-button {
+        padding: 2% 4%;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .content-wrapper {
+        margin: 10% 0;
+    }
+
+    .parameter {
+        flex-basis: 100%;
+    }
+}
