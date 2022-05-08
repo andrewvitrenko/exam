@@ -1,3 +1,51 @@
+let game;
+
+class Game {
+  food;
+  clean;
+  happiness;
+  health;
+  socialization;
+  money;
+
+  constructor () {
+    this.food = new Param('Food', 'food', 'food-circle');
+    this.clean = new Param('Clean', 'clean', 'clean-circle');
+    this.happiness = new Param('Happiness', 'happiness', 'happiness-circle');
+    this.health = new Param('Health', 'health', 'health-circle');
+    this.socialization = new Param('Socialization', 'socialization', 'socialization-circle');
+    this.money = new Param('Money', 'money', 'money-circle');
+  }
+
+  start() {
+    this.food.start();
+    this.clean.start();
+    this.happiness.start();
+    this.health.start();
+    this.socialization.start();
+    this.money.start();
+  }
+
+  stop(name) {
+    this.food.stop();
+    this.clean.stop();
+    this.happiness.stop();
+    this.health.stop();
+    this.socialization.stop();
+    this.money.stop();
+    alert(`${name} is out. Game over`);
+  }
+
+  reset() {
+    this.food.reset();
+    this.clean.reset();
+    this.happiness.reset();
+    this.health.reset();
+    this.socialization.reset();
+    this.money.reset();
+  }
+}
+
 class Param {
   progressContainer;
   circle;
@@ -24,7 +72,7 @@ class Param {
       this.value = 100;
     } else if (newValue <= 0) {
       this.value = 0;
-      this.stop();
+      game.stop(this.name);
     } else {
       this.value = newValue;
     }
