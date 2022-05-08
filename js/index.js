@@ -93,3 +93,16 @@ class Param {
     clearInterval(this.interval);
   }
 }
+
+window.addEventListener('load', () => {
+  game = new Game();
+  const startButton = document.getElementById('start');
+  const resetButton = document.getElementById('reset');
+
+  startButton.addEventListener('click', () => {
+    game.start();
+  });
+  resetButton.addEventListener('click', () => {
+    game.reset();
+  });
+});
