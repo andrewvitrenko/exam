@@ -64,7 +64,7 @@ class Param {
   start() {
     const startValue = Math.max(Math.round(Math.random() * 100), 5);
     this.update(startValue);
-    this.interval = setInterval(() => this.update(this.value - 10), 1000);
+    this.interval = setInterval(() => this.update(this.value - 3), 5000);
   }
 
   update(newValue) {
@@ -84,7 +84,9 @@ class Param {
 
   reset() {
     clearInterval(this.interval);
-    this.update(0);
+    this.value = 0;
+    this.progressContainer.innerHTML = this.value;
+    this.circle.style.strokeDashoffset = '0';
   }
 
   stop() {
