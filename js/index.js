@@ -145,13 +145,20 @@ class Param {
   interval;
   value;
   name;
-  handlers;
+  handlers = [];
 
-  constructor(name, id, circleId, handlers) {
+  constructor({ name, id, circleId, controllers }) {
     this.progressContainer = document.getElementById(id);
     this.name = name;
     this.circle = document.getElementById(circleId);
-    this.handlers = handlers;
+
+    for (const controller of controllers) {
+      const { buttonId, fieldsToChange } = controller;
+      const handleFunction = () => fieldsToChange.map(({ field, delta }) => {
+        game[field].update(game[field].value + delta);
+      });
+      this.handlers.push({ buttonId, handleFunction });
+    }
   }
 
   start() {
