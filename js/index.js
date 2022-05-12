@@ -165,6 +165,10 @@ class Param {
     const startValue = Math.max(Math.round(Math.random() * 100), 5);
     this.update(startValue);
     this.interval = setInterval(() => this.update(this.value - 3), 5000);
+    this.handlers.map(({ buttonId, handleFunction }) => {
+      const button = document.getElementById(buttonId);
+      button.addEventListener('click', handleFunction);
+    });
   }
 
   update(newValue) {
@@ -191,6 +195,10 @@ class Param {
 
   stop() {
     clearInterval(this.interval);
+    this.handlers.map(({ buttonId, handleFunction }) => {
+      const button = document.getElementById(buttonId);
+      button.removeEventListener('click', handleFunction);
+    });
   }
 }
 
