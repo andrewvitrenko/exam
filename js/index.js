@@ -101,13 +101,13 @@ class Game {
   socialization;
   money;
 
-  constructor () {
-    this.food = new Param('Food', 'food', 'food-circle');
-    this.clean = new Param('Clean', 'clean', 'clean-circle');
-    this.happiness = new Param('Happiness', 'happiness', 'happiness-circle');
-    this.health = new Param('Health', 'health', 'health-circle');
-    this.socialization = new Param('Socialization', 'socialization', 'socialization-circle');
-    this.money = new Param('Money', 'money', 'money-circle');
+  constructor() {
+    this.food = new Param({ ...config.food });
+    this.clean = new Param({ ...config.clean });
+    this.happiness = new Param({ ...config.happiness });
+    this.health = new Param({ ...config.health });
+    this.socialization = new Param({ ...config.socialization });
+    this.money = new Param({ ...config.money });
   }
 
   start() {
