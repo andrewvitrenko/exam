@@ -1,5 +1,98 @@
 let game;
 
+const config = {
+  food: {
+    name: 'Food',
+    id: 'food',
+    circleId: 'food-circle',
+    controllers: [{
+      buttonId: 'feed',
+      fieldsToChange: [
+        { field: 'food', delta: 30 },
+        { field: 'clean', delta: -20 },
+      ],
+    }, {
+      buttonId: 'buy-food',
+      fieldsToChange: [
+        { field: 'food', delta: 20 },
+        { field: 'money', delta: -20 },
+      ]
+    }]
+  },
+  clean: {
+    name: 'Clean',
+    id: 'clean',
+    circleId: 'clean-circle',
+    controllers: [{
+      buttonId: 'wash',
+      fieldsToChange: [
+        { field: 'clean', delta: 40 },
+        { field: 'happiness', delta: -20 },
+      ]
+    }],
+  },
+  happiness: {
+    name: 'Happiness',
+    id: 'happiness',
+    circleId: 'happiness-circle',
+    controllers: [{
+      buttonId: 'play',
+      fieldsToChange: [
+        { field: 'happiness', delta: 15 },
+        { field: 'food', delta: -10 },
+      ],
+    }],
+  },
+  health: {
+    name: 'Health',
+    id: 'health',
+    circleId: 'health-circle',
+    controllers: [{
+      buttonId: 'treat',
+      fieldsToChange: [
+        { field: 'health', delta: 30 },
+        { field: 'money', delta: -20 },
+      ]
+    }],
+  },
+  socialization: {
+    name: 'Socialization',
+    id: 'socialization',
+    circleId: 'socialization-circle',
+    controllers: [{
+      buttonId: 'go-to-bar',
+      fieldsToChange: [
+        { field: 'socialization', delta: 40 },
+        { field: 'food', delta: 10 },
+        { field: 'health', delta: -10 },
+        { field: 'money', delta: -20 },
+      ],
+    }],
+  },
+  money: {
+    name: 'Money',
+    id: 'money',
+    circleId: 'money-circle',
+    controllers: [{
+      buttonId: 'work',
+      fieldsToChange: [
+        { field: 'money', delta: 50 },
+        { field: 'food', delta: -10 },
+        { field: 'health', delta: -10 },
+        { field: 'socialization', delta: -20 }
+      ]
+    }, {
+      buttonId: 'start-business',
+      fieldsToChange: [
+        { field: 'money', delta: 100 },
+        { field: 'happiness', delta: 100 },
+        { field: 'health', delta: -100 },
+        { field: 'socialization', delta: 20 }
+      ]
+    }],
+  },
+};
+
 class Game {
   food;
   clean;
