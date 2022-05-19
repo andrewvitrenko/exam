@@ -1,3 +1,10 @@
+const MAX_VALUE = 100;
+const MIN_VALUE = 0;
+const MIN_START_VALUE = 5;
+const INTERVAL = 5000;
+const INTERVAL_DECREMENT = 3;
+const CIRCLE_RADIUS = 30;
+
 let game;
 
 const config = {
@@ -162,9 +169,9 @@ class Param {
   }
 
   start() {
-    const startValue = Math.max(Math.round(Math.random() * 100), 5);
+    const startValue = Math.max(Math.round(Math.random() * MAX_VALUE), MIN_START_VALUE);
     this.update(startValue);
-    this.interval = setInterval(() => this.update(this.value - 3), 5000);
+    this.interval = setInterval(() => this.update(this.value - INTERVAL_DECREMENT), INTERVAL);
     this.handlers.map(({ buttonId, handleFunction }) => {
       const button = document.getElementById(buttonId);
       button.addEventListener('click', handleFunction);
@@ -172,25 +179,25 @@ class Param {
   }
 
   update(newValue) {
-    if (newValue >= 100) {
-      this.value = 100;
-    } else if (newValue <= 0) {
-      this.value = 0;
+    if (newValue >= MAX_VALUE) {
+      this.value = MAX_VALUE;
+    } else if (newValue <= MIN_VALUE) {
+      this.value = MIN_VALUE;
       game.stop(this.name);
     } else {
       this.value = newValue;
     }
 
-    const offset = 2 * Math.PI * 30 * (100 - this.value) / 100;
+    const offset = 2 * Math.PI * CIRCLE_RADIUS * (MAX_VALUE - this.value) / MAX_VALUE;
     this.circle.style.strokeDashoffset = `${offset}px`;
     this.progressContainer.innerHTML = this.value;
   }
 
   reset() {
     clearInterval(this.interval);
-    this.value = 0;
+    this.value = MIN_VALUE;
     this.progressContainer.innerHTML = this.value;
-    this.circle.style.strokeDashoffset = '0';
+    this.circle.style.strokeDashoffset = `${MIN_VALUE}`;
   }
 
   stop() {
