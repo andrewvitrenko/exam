@@ -145,7 +145,7 @@ class Param {
     for (const controller of controllers) {
       const { buttonId, fieldsToChange } = controller;
       const handleFunction = () => fieldsToChange.map(({ field, delta }) => {
-        game.params[field].update(game.params[field].value + delta);
+        this.game.params[field].update(this.game.params[field].value + delta);
       });
       this.handlers.push({ buttonId, handleFunction });
     }
