@@ -101,48 +101,31 @@ const config = {
 };
 
 class Game {
-  food;
-  clean;
-  happiness;
-  health;
-  socialization;
-  money;
+  params = {};
 
   constructor() {
-    this.food = new Param({ ...config.food });
-    this.clean = new Param({ ...config.clean });
-    this.happiness = new Param({ ...config.happiness });
-    this.health = new Param({ ...config.health });
-    this.socialization = new Param({ ...config.socialization });
-    this.money = new Param({ ...config.money });
+    for (const item in config) {
+      this.params[config[item].id] = new Param({...config[item]});
+    }
   }
 
   start() {
-    this.food.start();
-    this.clean.start();
-    this.happiness.start();
-    this.health.start();
-    this.socialization.start();
-    this.money.start();
+    for (const param in this.params) {
+      this.params[param].start();
+    }
   }
 
   stop(name) {
-    this.food.stop();
-    this.clean.stop();
-    this.happiness.stop();
-    this.health.stop();
-    this.socialization.stop();
-    this.money.stop();
+    for (const param in this.params) {
+      this.params[param].stop();
+    }
     alert(`${name} is out. Game over`);
   }
 
   reset() {
-    this.food.reset();
-    this.clean.reset();
-    this.happiness.reset();
-    this.health.reset();
-    this.socialization.reset();
-    this.money.reset();
+    for (const param in this.params) {
+      this.params[param].reset();
+    }
   }
 }
 
@@ -162,7 +145,7 @@ class Param {
     for (const controller of controllers) {
       const { buttonId, fieldsToChange } = controller;
       const handleFunction = () => fieldsToChange.map(({ field, delta }) => {
-        game[field].update(game[field].value + delta);
+        game.params[field].update(game.params[field].value + delta);
       });
       this.handlers.push({ buttonId, handleFunction });
     }
