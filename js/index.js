@@ -171,7 +171,7 @@ class Param {
       this.value = newValue;
     }
 
-    const offset = 2 * Math.PI * CIRCLE_RADIUS * (MAX_VALUE - this.value) / MAX_VALUE;
+    const offset = this.calcOffset();
     this.circle.style.strokeDashoffset = `${offset}px`;
     this.progressContainer.innerHTML = this.value;
   }
@@ -189,6 +189,10 @@ class Param {
       const button = document.getElementById(buttonId);
       button.removeEventListener('click', handleFunction);
     });
+  }
+
+  calcOffset() {
+    return 2 * Math.PI * CIRCLE_RADIUS * (MAX_VALUE - this.value) / MAX_VALUE;
   }
 }
 
