@@ -4,6 +4,10 @@ const MIN_START_VALUE = 5;
 const INTERVAL = 5000;
 const INTERVAL_DECREMENT = 3;
 const CIRCLE_RADIUS = 30;
+const MODAL_ID = 'modal-wrapper';
+const MODAL_TEXT_ID = 'modal-text';
+const MODAL_ACTIVE_CLASS = 'modal-visible';
+const MODAL_VISIBLE_TIMEOUT = 3000;
 
 const config = {
   food: {
@@ -100,8 +104,12 @@ const config = {
 
 class Game {
   params = {};
+  modal;
+  modalTextContainer;
 
   constructor() {
+    this.modal = document.getElementById(MODAL_ID);
+    this.modalTextContainer = document.getElementById(MODAL_TEXT_ID);
     for (const item in config) {
       this.params[config[item].id] = new Param({ ...config[item], game: this });
     }
@@ -117,13 +125,23 @@ class Game {
     for (const param in this.params) {
       this.params[param].stop();
     }
-    alert(`${name} is out. Game over`);
+    this.showModal(name);
   }
 
   reset() {
     for (const param in this.params) {
       this.params[param].reset();
     }
+  }
+
+  showModal(paramName) {
+    const modalText = `Your tamagotchi has run out of ${paramName}. It's over. Start a new game and try better!`;
+    this.modalTextContainer.innerHTML = modalText;
+    this.modal.classList.add(MODAL_ACTIVE_CLASS);
+    const timeout = setTimeout(() => {
+      this.modal.classList.remove(MODAL_ACTIVE_CLASS);
+      clearTimeout(timeout);
+    }, MODAL_VISIBLE_TIMEOUT);
   }
 }
 
