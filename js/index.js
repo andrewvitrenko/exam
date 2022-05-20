@@ -5,8 +5,6 @@ const INTERVAL = 5000;
 const INTERVAL_DECREMENT = 3;
 const CIRCLE_RADIUS = 30;
 
-let game;
-
 const config = {
   food: {
     name: 'Food',
@@ -105,7 +103,7 @@ class Game {
 
   constructor() {
     for (const item in config) {
-      this.params[config[item].id] = new Param({...config[item]});
+      this.params[config[item].id] = new Param({ ...config[item], game: this });
     }
   }
 
@@ -136,8 +134,10 @@ class Param {
   value;
   name;
   handlers = [];
+  game;
 
-  constructor({ name, id, circleId, controllers }) {
+  constructor({ name, id, circleId, controllers, game }) {
+    this.game = game;
     this.progressContainer = document.getElementById(id);
     this.name = name;
     this.circle = document.getElementById(circleId);
@@ -166,7 +166,7 @@ class Param {
       this.value = MAX_VALUE;
     } else if (newValue <= MIN_VALUE) {
       this.value = MIN_VALUE;
-      game.stop(this.name);
+      this.game.stop(this.name);
     } else {
       this.value = newValue;
     }
@@ -193,7 +193,7 @@ class Param {
 }
 
 window.addEventListener('load', () => {
-  game = new Game();
+  const game = new Game();
   const startButton = document.getElementById('start');
   const resetButton = document.getElementById('reset');
 
