@@ -1,4 +1,13 @@
-let game;
+const MAX_VALUE = 100;
+const MIN_VALUE = 0;
+const MIN_START_VALUE = 5;
+const INTERVAL = 5000;
+const INTERVAL_DECREMENT = 3;
+const CIRCLE_RADIUS = 30;
+const MODAL_ID = 'modal-wrapper';
+const MODAL_TEXT_ID = 'modal-text';
+const MODAL_ACTIVE_CLASS = 'modal-visible';
+const MODAL_VISIBLE_TIMEOUT = 3000;
 
 const config = {
   food: {
@@ -94,48 +103,45 @@ const config = {
 };
 
 class Game {
-  food;
-  clean;
-  happiness;
-  health;
-  socialization;
-  money;
+  params = {};
+  modal;
+  modalTextContainer;
 
   constructor() {
-    this.food = new Param({ ...config.food });
-    this.clean = new Param({ ...config.clean });
-    this.happiness = new Param({ ...config.happiness });
-    this.health = new Param({ ...config.health });
-    this.socialization = new Param({ ...config.socialization });
-    this.money = new Param({ ...config.money });
+    this.modal = document.getElementById(MODAL_ID);
+    this.modalTextContainer = document.getElementById(MODAL_TEXT_ID);
+    for (const item in config) {
+      this.params[config[item].id] = new Param({ ...config[item], game: this });
+    }
   }
 
   start() {
-    this.food.start();
-    this.clean.start();
-    this.happiness.start();
-    this.health.start();
-    this.socialization.start();
-    this.money.start();
+    for (const param in this.params) {
+      this.params[param].start();
+    }
   }
 
   stop(name) {
-    this.food.stop();
-    this.clean.stop();
-    this.happiness.stop();
-    this.health.stop();
-    this.socialization.stop();
-    this.money.stop();
-    alert(`${name} is out. Game over`);
+    for (const param in this.params) {
+      this.params[param].stop();
+    }
+    this.showModal(name);
   }
 
   reset() {
-    this.food.reset();
-    this.clean.reset();
-    this.happiness.reset();
-    this.health.reset();
-    this.socialization.reset();
-    this.money.reset();
+    for (const param in this.params) {
+      this.params[param].reset();
+    }
+  }
+
+  showModal(paramName) {
+    const modalText = `Your tamagotchi has run out of ${paramName}. It's over. Start a new game and try better!`;
+    this.modalTextContainer.innerHTML = modalText;
+    this.modal.classList.add(MODAL_ACTIVE_CLASS);
+    const timeout = setTimeout(() => {
+      this.modal.classList.remove(MODAL_ACTIVE_CLASS);
+      clearTimeout(timeout);
+    }, MODAL_VISIBLE_TIMEOUT);
   }
 }
 
@@ -146,8 +152,10 @@ class Param {
   value;
   name;
   handlers = [];
+  game;
 
-  constructor({ name, id, circleId, controllers }) {
+  constructor({ name, id, circleId, controllers, game }) {
+    this.game = game;
     this.progressContainer = document.getElementById(id);
     this.name = name;
     this.circle = document.getElementById(circleId);
@@ -155,16 +163,16 @@ class Param {
     for (const controller of controllers) {
       const { buttonId, fieldsToChange } = controller;
       const handleFunction = () => fieldsToChange.map(({ field, delta }) => {
-        game[field].update(game[field].value + delta);
+        this.game.params[field].update(this.game.params[field].value + delta);
       });
       this.handlers.push({ buttonId, handleFunction });
     }
   }
 
   start() {
-    const startValue = Math.max(Math.round(Math.random() * 100), 5);
+    const startValue = Math.max(Math.round(Math.random() * MAX_VALUE), MIN_START_VALUE);
     this.update(startValue);
-    this.interval = setInterval(() => this.update(this.value - 3), 5000);
+    this.interval = setInterval(() => this.update(this.value - INTERVAL_DECREMENT), INTERVAL);
     this.handlers.map(({ buttonId, handleFunction }) => {
       const button = document.getElementById(buttonId);
       button.addEventListener('click', handleFunction);
@@ -172,25 +180,25 @@ class Param {
   }
 
   update(newValue) {
-    if (newValue >= 100) {
-      this.value = 100;
-    } else if (newValue <= 0) {
-      this.value = 0;
-      game.stop(this.name);
+    if (newValue >= MAX_VALUE) {
+      this.value = MAX_VALUE;
+    } else if (newValue <= MIN_VALUE) {
+      this.value = MIN_VALUE;
+      this.game.stop(this.name);
     } else {
       this.value = newValue;
     }
 
-    const offset = 2 * Math.PI * 30 * (100 - this.value) / 100;
+    const offset = this.calcOffset();
     this.circle.style.strokeDashoffset = `${offset}px`;
     this.progressContainer.innerHTML = this.value;
   }
 
   reset() {
     clearInterval(this.interval);
-    this.value = 0;
+    this.value = MIN_VALUE;
     this.progressContainer.innerHTML = this.value;
-    this.circle.style.strokeDashoffset = '0';
+    this.circle.style.strokeDashoffset = `${MIN_VALUE}`;
   }
 
   stop() {
@@ -200,10 +208,14 @@ class Param {
       button.removeEventListener('click', handleFunction);
     });
   }
+
+  calcOffset() {
+    return 2 * Math.PI * CIRCLE_RADIUS * (MAX_VALUE - this.value) / MAX_VALUE;
+  }
 }
 
 window.addEventListener('load', () => {
-  game = new Game();
+  const game = new Game();
   const startButton = document.getElementById('start');
   const resetButton = document.getElementById('reset');
 
